@@ -1,0 +1,14 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  backend:
+    dir: backend
+    cmds:
+      - go run .
+
+  cli:
+    dir: frontend
+    cmds:
+      - go run .
