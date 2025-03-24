@@ -14,13 +14,13 @@ tasks:
     deps: [backend-build]
     cmds: [./build/pokcli-backend]
 
-  cli-build:
-    desc: Build frontend
+  frontend-build:
+    desc: Build frontend CLI
     dir: frontend
     cmds: [go build -o build/pokcli]
 
-  cli-run:
-    desc: Run backend
+  frontend-run:
+    desc: Run frontend CLI
     dir: frontend
-    deps: [cli-build]
+    deps: [frontend-build]
     cmds: [./build/pokcli]
