@@ -3,12 +3,24 @@
 version: '3'
 
 tasks:
-  backend:
+  backend-build:
+    desc: Build backend
     dir: backend
-    cmds:
-      - go run .
+    cmds: [go build -o build/pokcli-backend]
 
-  cli:
+  backend-run:
+    desc: Run backend
+    dir: backend
+    deps: [backend-build]
+    cmds: [./build/pokcli-backend]
+
+  cli-build:
+    desc: Build frontend
     dir: frontend
-    cmds:
-      - go run .
+    cmds: [go build -o build/pokcli]
+
+  cli-run:
+    desc: Run backend
+    dir: frontend
+    deps: [cli-build]
+    cmds: [./build/pokcli]
