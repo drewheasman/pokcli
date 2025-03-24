@@ -1,0 +1,21 @@
+name: Build
+
+on: [push]
+
+jobs:
+
+  backend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install Task
+        uses: arduino/setup-task@v2
+
+      - name: Build backend
+        run: task backend-build
+
+      - name: Build frontend
+        run: task frontend-build
