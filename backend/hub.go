@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
@@ -7,7 +11,7 @@ type Hub struct {
 	clients map[*Client]bool
 
 	// Inbound messages from the clients.
-	broadcast chan []byte
+	broadcast chan ClientMessage
 
 	// Register requests from the clients.
 	register chan *Client
@@ -18,7 +22,7 @@ type Hub struct {
 
 func newHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan []byte),
+		broadcast:  make(chan ClientMessage),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
@@ -36,9 +40,15 @@ func (h *Hub) run() {
 				close(client.send)
 			}
 		case message := <-h.broadcast:
+			senderResponse, allResponse, err := handleMessage(message)
+			if err != nil {
+				message.sender.send <- fmt.Appendf(nil, "Error with message %v", err)
+				return
+			}
+			message.sender.send <- []byte(senderResponse.Message)
 			for client := range h.clients {
 				select {
-				case client.send <- message:
+				case client.send <- []byte(allResponse.Message):
 				default:
 					close(client.send)
 					delete(h.clients, client)
@@ -46,4 +56,28 @@ func (h *Hub) run() {
 			}
 		}
 	}
+}
+
+type ClientMessage struct {
+	sender  *Client
+	content []byte
+}
+
+type ClientResponse struct {
+	Message string `json:"message"`
+}
+
+func handleMessage(message ClientMessage) (ClientResponse, ClientResponse, error) {
+	var senderResponse ClientResponse
+	var allClientsResponse ClientResponse
+
+	senderResponse = ClientResponse{
+		Message: "you sent " + string(message.content),
+	}
+
+	allClientsResponse = ClientResponse{
+		Message: string(message.content),
+	}
+
+	return senderResponse, allClientsResponse, nil
 }

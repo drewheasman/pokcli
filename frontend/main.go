@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"log"
+	"os"
+
+	"github.com/gorilla/websocket"
 )
 
 func main() {
@@ -14,16 +17,28 @@ func main() {
 	}
 	defer conn.Close()
 
-	message := "Hello, WebSocket Server!"
-	err = conn.WriteMessage(websocket.TextMessage, []byte(message))
-	if err != nil {
-		log.Fatal("Write error:", err)
-	}
-	fmt.Println("Sent:", message)
+	go func() {
+		for {
+			_, message, err := conn.ReadMessage()
+			if err != nil {
+				log.Println("websocket read error:", err)
+				return
+			}
+			fmt.Println("\r", string(message))
+			fmt.Print("> ")
+		}
+	}()
 
-	_, response, err := conn.ReadMessage()
-	if err != nil {
-		log.Fatal("Read error:", err)
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Print("> ")
+		if !scanner.Scan() {
+			panic("fatal while reading input!")
+		}
+		input := scanner.Text()
+		err = conn.WriteMessage(websocket.TextMessage, []byte(input))
+		if err != nil {
+			log.Fatal("Write error:", err)
+		}
 	}
-	fmt.Println("Received:", string(response))
 }
