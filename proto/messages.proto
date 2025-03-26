@@ -1,7 +1,7 @@
 syntax = "proto3";
 package pokcli;
 
-option go_package = "github.com/drewheasman/pokcli/proto/messages";
+option go_package = "github.com/drewheasman/pokcli/proto/";
 
 message Register {
   string name = 1;

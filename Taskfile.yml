@@ -3,6 +3,14 @@
 version: '3'
 
 tasks:
+  proto-gen:
+    desc: Generate proto code
+    dir: proto
+    cmds:
+      - rm -rf ./gen
+      - mkdir ./gen
+      - protoc -I=./ --go_out=./gen ./*.proto
+
   backend-build:
     desc: Build backend
     dir: backend

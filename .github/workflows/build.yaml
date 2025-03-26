@@ -16,6 +16,12 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install protoc
+        uses: arduino/setup-protoc@v3
+
+      - name: Generate proto code
+        run: task proto-build
+
       - name: Build backend
         run: task backend-build
 
