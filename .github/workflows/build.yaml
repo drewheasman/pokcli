@@ -20,7 +20,9 @@ jobs:
         uses: arduino/setup-protoc@v3
 
       - name: Generate proto code
-        run: task proto-gen
+        run: |
+          export PATH="$PATH:/opt/hostedtoolcache/protoc/v23.4/x64"
+          task proto-gen
 
       - name: Build backend
         run: task backend-build
