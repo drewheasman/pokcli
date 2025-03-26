@@ -16,16 +16,10 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          version: '3.x'
-
-      - name: Generate proto code
-        run: |
-          (cd backend && go get github.com/golang/protobuf/protoc-gen-go)
-          (cd backend && go get google.golang.org/grpc/cmd/protoc-gen-go-grpc)
-          task proto-gen
+      # - name: Install protoc
+      #   uses: arduino/setup-protoc@v3
+      # - name: Generate proto code
+      #   run: task proto-gen
 
       - name: Build backend
         run: task backend-build
