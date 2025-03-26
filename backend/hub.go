@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -33,6 +34,7 @@ func (h *Hub) run() {
 	for {
 		select {
 		case client := <-h.register:
+			log.Print("registering client")
 			h.clients[client] = true
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {

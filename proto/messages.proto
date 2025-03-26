@@ -1,0 +1,27 @@
+syntax = "proto3";
+package pokcli;
+
+option go_package = "github.com/drewheasman/pokcli/proto/messages";
+
+message Register {
+  string name = 1;
+}
+message RegisterOutcome {
+  bool status = 1;
+  string message = 2;
+}
+
+message PlayAction {
+  PlayActionType type = 1;
+}
+enum PlayActionType {
+  CHECK = 0;
+  CALL = 1;
+  BET = 2;
+  FOLD = 3;
+}
+
+message BetOutcome {
+  string player_name = 1;
+  int32 value = 2;
+}
