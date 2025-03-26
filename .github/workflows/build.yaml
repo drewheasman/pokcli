@@ -20,7 +20,7 @@ jobs:
         uses: arduino/setup-protoc@v3
 
       - name: Generate proto code
-        run: task proto-build
+        run: task proto-gen
 
       - name: Build backend
         run: task backend-build
