@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  backend-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +18,8 @@ jobs:
 
       - name: Install protoc
         uses: arduino/setup-protoc@v3
+        with:
+          version: '3.x'
 
       - name: Generate proto code
         run: |
