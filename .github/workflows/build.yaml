@@ -21,7 +21,8 @@ jobs:
 
       - name: Generate proto code
         run: |
-          export PATH="$PATH:/opt/hostedtoolcache/protoc/v23.4/x64"
+          (cd backend && go get github.com/golang/protobuf/protoc-gen-go)
+          (cd backend && go get google.golang.org/grpc/cmd/protoc-gen-go-grpc)
           task proto-gen
 
       - name: Build backend
