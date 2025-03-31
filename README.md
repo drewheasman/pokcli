@@ -11,3 +11,6 @@ Run the server with `task backend-run`
 
 ## Client
 Run the client with `task cli-run`
+
+# Contributing
+Just raise a PR if you'd like to contribute.
